@@ -13,26 +13,41 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#define SIZE 500001
+#define SIZE 500000
+#define MOD 1000000007
 
-int main(int argc, char const *argv[]) {
-    if (argc != 1) {
-        return 1;
-    }
-    int T;
-    scanf("%d", &T);
-    for (int t = 1; t <= T; t++) {
-        int n, m;
-        char str[SIZE];
-        printf("Case-%d:\n", t);
-        scanf("%d %d", &n, &m);
-        for (int i = 0; i < m; i++) {
-            scanf("%s", str);
-            int len = strlen(str);
-            int rem = n - len;
-            long long int count = pow(26, rem) * (rem + 1);
-            printf("%lld\n", count);
+long long int mod_pow(long long int b, long long int e) {
+    long long int res = 1;
+    b = b % MOD;
+    while (e > 0) {
+        if (e & 1) {
+            res = (res * b) % MOD;
         }
+        e = e >> 1;
+        b = (b * b) % MOD;
     }
-    return 0;
+    return res;
+}
+
+int main(void) {
+	int t;
+	scanf("%d", &t);
+	for (int i = 1; i <= t; i++) {
+	    int n, m;
+	    scanf("%d %d", &n, &m);
+	    printf("Case %d:\n", i);
+	    char str[SIZE];
+	    for (int j = 0; j < m; j++) {
+    	    scanf("%s", str);
+    	    int k = strlen(str);
+    	    if (n < k) {
+    	        puts("0");
+    	        continue;
+    	    }
+    	    long long int ans = mod_pow(26, n - k);
+	        ans = (ans * ((n - k + 1) % MOD)) % MOD;
+	        printf("%lld\n", ans);
+	    }
+	}
+	return 0;
 }
